@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="{% static "/favicon.ico" %}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A400" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400" />
+  {% block styles %}{% endblock styles %}
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static "deps/favicon_io/apple-touch-icon.png" %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static "deps/favicon_io/favicon-32x32.png" %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static "deps/favicon_io/favicon-16x16.png" %}">
+  <link rel="manifest" href="{% static "deps/favicon_io/site.webmanifest" %}">
+</head>
+
+<body>
+  <div class="navbar">
+    <img class="image" src="{% static "deps/images/image.png" %}" href="{% url "index" %}" />
+    <a href="{% url "index" %}">
+      <p class="top_text">
+        Система поиска
+        <br />
+        запрещенного контента
+      </p>
+    </a>
+  </div>
+  {% block wall %}{% endblock  %}
+  <div class="footer">
+    <div class="row">
+      <div class="col-lg-4 text-center footer_text_1">
+        <p>All Rights Reserved 2024</p>
+      </div>
+      <div class="col-lg-4 text-center footer_text_2">
+        <a href="{% url "about" %}" style="color: white;">
+          <p class="footer-contacts">Контакты</p>
+        </a>
+        <a href="#" style="color: white;">Сообщить о нарушении</a>
+      </div>
+      <div class="col-lg-4 text-center footer_text"></div>
+    </div>
+  </div>
+</body>
+
+</html>

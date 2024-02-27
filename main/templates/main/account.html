@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static "deps/styles/account.css" %}" />
+{% endblock styles %}
+
+{% block wall %}
+<div class="wall">
+    <form>
+      <div>
+        <p class="input-text">Вставьте ссылку на аккаунт:</p>
+        <input style="font-size: 20px;" class="form-control" type="text" placeholder="https://vk.com/example"
+          pattern="https://vk.com/.*" required>
+      </div>
+      <div>
+        <ul>
+          <li>
+            <label><input type="checkbox">Получить краткую информацию</label>
+          </li>
+          <li>
+            <label><input type="checkbox">Анализировать посты</label>
+          </li>
+          <li>
+            <label><input type="checkbox">Анализировать комментарии</label>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <button class="btn btn-outline-secondary" type="submit">Отправить</button>
+      </div>
+    </form>
+  </div>
+{% endblock  %}

@@ -1,11 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-  </head>
-  <body>
-    <p>Page content</p>
-  </body>
-</html>
+{% extends "main/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static "deps/styles/index.css" %}" />
+{% endblock styles %}
+
+{% block wall %}
+<div class="wall">
+  <div class="main-text">
+    <p>Этот сайт предназначен для выявления запрещённого контента в сообществах и личных аккаунтах пользователей в
+      социальной сети «Вконтакте».
+      Всё, что нужно для получения требуемой информации — ввести ссылку на сообщество или аккаунт. Необходимые данные
+      будут собраны с помощью <a href="https://dev.vk.com/ru/reference" target="_blank">VK API</a> и проанализированы
+      нейронной сетью.</p>
+  </div>
+  <div class="main_block">
+    <p class="block_text">Выберите формат поиска</p>
+    <div class="buttons">
+      <a class="a-buttons" href="{% url "groups" %}"><button class="left_button">В сообществах</button></a>
+      <a class="a-buttons" href="{% url "account" %}"><button class="right_button">В аккаунтах</button></a>
+    </div>
+  </div>
+</div>
+{% endblock  %}

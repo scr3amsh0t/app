@@ -2,7 +2,25 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 def index(request):
-    return render(request, 'main\index.html') 
+    context = {
+        'title' : 'Поиск запрещеннного контента'
+        }
+    return render(request, 'main/index.html', context)
 
 def about(request):
-    return HttpResponse('About page')  
+    context = {
+        'title' : 'Поиск запрещеннного контента'
+        }
+    return render(request, 'main/about.html', context) 
+
+def groups(request):
+    context = {
+        'title' : 'Поиск запрещеннного контента'
+        }
+    return render(request, 'main/groups.html', context) 
+
+def account(request):
+    context = {
+        'title' : 'Поиск запрещеннного контента'
+        }
+    return render(request, 'main/account.html', context) 
