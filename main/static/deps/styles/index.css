@@ -19,7 +19,7 @@ a {
   text-decoration: none;
 }
 
-a:visited {
+.vk-url:visited {
   color:  #0000FF;
 }
 
@@ -56,7 +56,8 @@ div {
   align-items: center;
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+  background-image: url("../images/fon.jpg");
+  background-size: 100% 100%;
 }
 
 .main-text {
@@ -66,7 +67,7 @@ div {
 }
 
 .wall .main_block {
-  margin-bottom: 2px;
+  margin-bottom: 200px;
   box-sizing: border-box;
   padding: 5% 10%;
   width: calc(100% - 50rem);
@@ -95,43 +96,29 @@ div {
   justify-items: center;
 }
 
-.wall .main_block .buttons .left_button {
-  height: 10px;
-  border: solid 0.1rem #000000;
-  border-radius: 3rem;
-  font-size: x-large;
-  max-width: 500px;
-  text-align: center;
-  color: #000000;
-  font-family: Inter, 'Source Sans Pro';
-  background-color:aliceblue;
-}
-
-.left_button:hover {
-  background-color:wheat !important;
-}
-
-.wall .main_block .buttons .right_button {
-  width: 80%;
+.a-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 75%;
   height: 100px;
   border: solid 0.1rem #000000;
   border-radius: 3rem;
   font-size: x-large;
   max-width: 500px;
+  cursor: pointer;
   text-align: center;
   color: #000000;
   font-family: Inter, 'Source Sans Pro';
   background-color:aliceblue;
 }
 
-.right_button:hover {
+.a-buttons:hover {
   background-color:wheat !important;
 }
 
-.a-buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.a-buttons:visited {
+  color:  #000000;
 }
 
 .footer {

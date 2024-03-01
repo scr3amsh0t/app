@@ -56,7 +56,8 @@ div {
   align-items: center;
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+  background-image: url("../images/fon.jpg");
+  background-size: 100% 100%;
 }
 
 .main-text {

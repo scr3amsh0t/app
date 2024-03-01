@@ -32,7 +32,6 @@ div {
     align-items: center;
     border-bottom: solid 2px #07155c;
     background-color: #a8c0fe;
-    margin-bottom: 100px;
   }
   
 .navbar .image {
@@ -52,11 +51,12 @@ div {
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+  background-image: url("../images/fon.jpg");
+  background-size: 100% 100%;
 }
 
 form {
-    margin: 0px 0px 10px 80px;
+    margin: 100px 0px 10px 80px;
     width: 40%;
     position: relative;
     flex-wrap: wrap;
