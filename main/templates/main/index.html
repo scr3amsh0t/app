@@ -17,8 +17,12 @@
   </div>
   <div class="main_block">
     <p class="block_text">Выберите формат поиска</p>
-    <div class="buttons">
-      <a class="a-buttons" href="{% url "groups" %}"><button class="left_button">В сообществах</button></a>
+    <div class="buttons">   
+      {% comment %}  весь блок - это кнопка, поэтому он польностью кликабелен, сделать только a-buttons кликабельные {% endcomment %}
+
+      <button class="left_button"><a class="a-buttons" href="{% url "groups" %}">В сообществах</a></button>
+      
+
       <a class="a-buttons" href="{% url "account" %}"><button class="right_button">В аккаунтах</button></a>
     </div>
   </div>
