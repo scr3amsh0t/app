@@ -151,11 +151,11 @@ input[type=checkbox] {
     border-color: #6c757d;
   }
 
-  /* .btn-outline-secondary:hover {
+  .btn-outline-secondary:hover {
     color: #fff;
     background-color: #5683f4;
     border-color: #6c757d;
-  } */
+  }
 
 
   .footer {

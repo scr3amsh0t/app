@@ -8,28 +8,29 @@
 
 {% block wall %}
 <div class="wall">
-    <form>
+    <form id="accountForm" action="" method="get">
       <div>
         <p class="input-text">Вставьте ссылку на аккаунт:</p>
-        <input style="font-size: 20px;" class="form-control" type="text" placeholder="https://vk.com/example"
-          pattern="https://vk.com/.*" required>
+        <input type="text" class="form-control" id="textInput" style="font-size: 20px;" placeholder="https://vk.com/example"
+         value="https://vk.com/" pattern="https://vk.com/.*" required>
       </div>
       <div>
         <ul>
           <li>
-            <label><input type="checkbox">Получить краткую информацию</label>
+            <label><input type="checkbox" id="checkbox1" name="checkbox1">Получить краткую информацию</label>
           </li>
           <li>
-            <label><input type="checkbox">Анализировать посты</label>
+            <label><input type="checkbox" id="checkbox2" name="checkbox2">Анализировать посты</label>
           </li>
           <li>
-            <label><input type="checkbox">Анализировать комментарии</label>
+            <label><input type="checkbox" id="checkbox3" name="checkbox3">Анализировать комментарии</label>
           </li>
         </ul>
       </div>
       <div>
-        <button class="btn btn-outline-secondary" type="submit">Отправить</button>
+        <button class="btn btn-outline-secondary" type="submit" onclick="validateForm()">Отправить</button>
       </div>
     </form>
   </div>
+
 {% endblock  %}
