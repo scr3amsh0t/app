@@ -1,9 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+import scripts.account_info
 
 def index(request):
     context = {
-        'title' : 'Поиск запрещеннного контента'
+        'title' : 'Поиск запрещенного контента'
         }
     return render(request, 'main/index.html', context)
 

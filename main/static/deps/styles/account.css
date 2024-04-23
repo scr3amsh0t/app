@@ -74,11 +74,18 @@ form {
 .input-text {
     margin-bottom: 2%;
     font-size: 20px;
-    font-weight: 400;
+    font-weight: 800;
     color: #ffffff;
     font-family: Inter, 'Source Sans Pro';
     white-space: nowrap;
     flex-shrink: 0;
+  }
+
+  .help-text {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    font-family: Inter, 'Source Sans Pro';
   }
   
 input:focus {

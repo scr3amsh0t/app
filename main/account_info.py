@@ -20,7 +20,7 @@ def get_account_info(screen_name):
 
 
 
-def file_writer_account(data):                                                #можно убрать csv
+def file_writer_account(data):                                               
     with open('account_info.txt', 'w', newline='', encoding="utf-8") as file:
         file.write("%s\n" % data)
 
