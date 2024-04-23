@@ -1,5 +1,6 @@
 import csv
 import requests
+import sys
 from urllib.parse import urlparse
 
 
@@ -7,9 +8,12 @@ def get_name(url):
     parsed_url = urlparse(url)
     if (parsed_url.netloc != 'vk.com'):
         print("Неверная ссылка")                        # проверить другие варианты неверного ввода
+        sys.exit()
     else:
         name = parsed_url.path[1:]
+        print(name)
         return name
+
 
 
 def get_screen_name(name):
@@ -21,6 +25,7 @@ def get_screen_name(name):
                                 'v': version,
                                 'screen_name': name
                             })
+    print(response.json())
     screen_name = response.json()['response']['object_id']
     type = response.json()['response']['type']
     if type == 'user':

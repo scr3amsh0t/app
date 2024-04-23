@@ -2,7 +2,7 @@ from openpyxl import load_workbook
 import time
 
 import requests
-from main import get_name, get_screen_name
+from main.main import get_name, get_screen_name
 
 def get_comments(screen_name):
     token = 'vk1.a.byMJTaFR8uzQ2VOgF72GpGczOd0RnOu1YBVklpdL9Rnndd-5TSH1FGz94XMiFgw4b13TFUQNikYHk79VQ5jwJ7GHKIoVZb3No7t97wJZTlgj5iqirPrXCXikDQOuSewYbYUbwuMb7kth4YqsAC8pDxBE-ax68I0qYiEHhkFnumJo3HzsWxRgvfPKwMck6jl1IDxVnpZ_uTGQMAZa2Kl9Xg'
@@ -42,20 +42,12 @@ def get_comments(screen_name):
 
 
 def file_writer_comments(data):
-    fn = 'comments.xlsx'
-    wb = load_workbook(fn)
-    ws = wb['data']
-    for comment in data:
-        ws.append([comment['text']])
-    wb.save(fn)
-    wb.close()
+    with open('comments.txt', 'w', newline='', encoding="utf-8") as file:
+        for comment in data:
+            if comment['text'] != '':
+                file.write("%s\n" % comment['text'])
+     
 
-# def file_writer_comments(data):                                                  #можно убрать csv
-#     with open('comments.txt', 'w', newline='', encoding="utf-8") as file:
-#         write = csv.writer(file)
-#         for comment in data:
-#             write.writerow((comment['from_id'], comment['text']))       #обработка тредов и пустых комментов
-
-url = "https://vk.com/public22822305"
-comments = get_comments(get_screen_name(get_name(url)))
-file_writer_comments(comments)                                       #удалить пустые комменты
+# url = "https://vk.com/scr3amsh0t"
+# comments = get_comments(get_screen_name(get_name(url)))
+# file_writer_comments(comments)                                       #удалить пустые комменты

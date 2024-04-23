@@ -8,11 +8,11 @@
 
 {% block wall %}
 <div class="wall">
-    <form id="accountForm" method="POST">
-        {% csrf_token %}
+    <form id="accountForm" method="GET" action="account/">
       <div>
+        {% csrf_token %}
         <p class="input-text">Вставьте ссылку на аккаунт:</p>
-        <input type="text" class="form-control" id="textInput" style="font-size: 20px;" placeholder="https://vk.com/example"
+        <input type="text" class="form-control" id="textInput" name="input" style="font-size: 20px;" placeholder="https://vk.com/example"
          value="https://vk.com/" pattern="https://vk.com/.*" required>
       </div>
       <div>
@@ -51,14 +51,19 @@
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script>
-    {% comment %} $(document).ready(function() {
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+    $(document).ready(function() { 
         function get_account_info() {
+            const data = {
+                textInput: $("#textInput").val(),
+              };
             $.ajax({
-                url: "",
-                type: "POST",
-                data: {},
+                url: "/handle_account_info/",
+                type: "GET",
+                data: data,
                 success: function(response) {
-                
                     console.log(response);
                 },
                 error: function(xhr, status, error) {
@@ -70,8 +75,8 @@
         
         function get_posts() {
             $.ajax({
-                url: "/scripts/posts.py", 
-                type: "POST",
+                url: "/handle_posts/", 
+                type: "GET",
                 data: {},
                 success: function(response) {
                     
@@ -86,8 +91,8 @@
         
         function get_comments() {
             $.ajax({
-                url: "/scripts/comments.py", 
-                type: "POST",
+                url: "/handle_comments/", 
+                type: "GET",
                 data: {},
                 success: function(response) {
                     
@@ -98,7 +103,7 @@
                     console.error(error);
                 }
             });
-        } {% endcomment %}
+        } 
         
         $("#accountForm").submit(function(event) {
             event.preventDefault();
@@ -130,7 +135,7 @@
                 get_comments();
               }
           });
-        });
+        }); 
     </script>
 
 {% endblock  %}
