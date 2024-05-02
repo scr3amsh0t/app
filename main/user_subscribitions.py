@@ -1,5 +1,5 @@
 import requests
-from main import get_name, get_screen_name
+from main.main import get_name, get_screen_name
 
 
 def get_number_of_subscriptions(screen_name):
@@ -50,14 +50,9 @@ def get_user_subscriptions(screen_name, group_numbers):
         users.extend(group_info)
     return users
 
-def file_writer(data):                                                #можно убрать csv
+def file_writer(data):                                                
     with open('user_subscriptions.txt', 'w', newline='', encoding="utf-8") as file:
         for info in data:
             if (info['type'] == 'page' or info['type'] == 'group'):
                 info = ["vk.com/club%s" % info['id'], info['name']]
                 file.write("%s\n" % info)
-
-url = "https://vk.com/aweipo"
-group_number = get_number_of_subscriptions(get_screen_name(get_name(url)))
-groups = get_user_subscriptions(get_screen_name(get_name(url)), group_number)
-file_writer(groups)

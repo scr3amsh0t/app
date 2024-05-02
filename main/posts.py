@@ -18,7 +18,7 @@ def get_posts_count(screen_name):
     return posts_count
 
 
-def get_posts(screen_name):
+def get_posts(screen_name, posts_count):
     token = 'vk1.a.byMJTaFR8uzQ2VOgF72GpGczOd0RnOu1YBVklpdL9Rnndd-5TSH1FGz94XMiFgw4b13TFUQNikYHk79VQ5jwJ7GHKIoVZb3No7t97wJZTlgj5iqirPrXCXikDQOuSewYbYUbwuMb7kth4YqsAC8pDxBE-ax68I0qYiEHhkFnumJo3HzsWxRgvfPKwMck6jl1IDxVnpZ_uTGQMAZa2Kl9Xg'
     version = 5.199
     owner_id = screen_name
@@ -59,9 +59,9 @@ def file_writer_posts(data):                                                #Ð¼Ð
 
 
 
-url = "https://vk.com/scr3amsh0t"                                             #input
+# url = "https://vk.com/no4vick"                                             #input
 # get_name(url)
 # screen_name = get_screen_name(get_name(url))
 # posts_count = get_posts_count(screen_name)
-# posts = get_posts(screen_name)
+# posts = get_posts(screen_name, posts_count)
 # file_writer_posts(posts)

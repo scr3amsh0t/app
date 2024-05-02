@@ -19,13 +19,13 @@
         <p class="help-text">Выберите варианты поиска:</p>
         <ul>
           <li>
-            <label><input type="checkbox" id="checkbox1" name="checkbox1">Получить краткую информацию</label>
+            <label><input type="checkbox" id="checkbox1" name="checkbox1">Анализировать посты</label>
           </li>
           <li>
-            <label><input type="checkbox" id="checkbox2" name="checkbox2">Анализировать посты</label>
+            <label><input type="checkbox" id="checkbox2" name="checkbox2">Анализировать комментарии на странице</label>
           </li>
           <li>
-            <label><input type="checkbox" id="checkbox3" name="checkbox3">Анализировать комментарии на странице</label>
+            <label><input type="checkbox" id="checkbox3" name="checkbox3">Получить список сообществ</label>
           </li>
         </ul>
       </div>
@@ -54,30 +54,15 @@
     $.ajaxSetup({
         data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
     });
-    $(document).ready(function() { 
-        function get_account_info() {
+    $(document).ready(function() {
+        function get_posts() {
             const data = {
                 textInput: $("#textInput").val(),
               };
             $.ajax({
-                url: "/handle_account_info/",
-                type: "GET",
-                data: data,
-                success: function(response) {
-                    console.log(response);
-                },
-                error: function(xhr, status, error) {
-                    
-                    console.error(error);
-                }
-            });
-        }
-        
-        function get_posts() {
-            $.ajax({
                 url: "/handle_posts/", 
                 type: "GET",
-                data: {},
+                data: data,
                 success: function(response) {
                     
                     console.log(response);
@@ -90,10 +75,13 @@
         }
         
         function get_comments() {
+            const data = {
+                textInput: $("#textInput").val(),
+              };
             $.ajax({
                 url: "/handle_comments/", 
                 type: "GET",
-                data: {},
+                data: data,
                 success: function(response) {
                     
                     console.log(response);
@@ -104,6 +92,24 @@
                 }
             });
         } 
+
+        function get_subs() {
+          const data = {
+              textInput: $("#textInput").val(),
+            };
+          $.ajax({
+              url: "/handle_user_subs/",
+              type: "GET",
+              data: data,
+              success: function(response) {
+                  console.log(response);
+              },
+              error: function(xhr, status, error) {
+                  
+                  console.error(error);
+              }
+          });
+      }
         
         $("#accountForm").submit(function(event) {
             event.preventDefault();
@@ -126,14 +132,14 @@
             }
             
             if($("#checkbox1").is(":checked")) {
-                get_account_info();
-            }
-            if($("#checkbox2").is(":checked")) {
                 get_posts();
             }
-            if($("#checkbox3").is(":checked")) {
+            if($("#checkbox2").is(":checked")) {
                 get_comments();
-              }
+            }
+            if($("#checkbox3").is(":checked")) {
+                get_subs();
+            }
           });
         }); 
     </script>

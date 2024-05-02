@@ -70,7 +70,7 @@ div {
   margin-bottom: 200px;
   box-sizing: border-box;
   padding: 5% 10%;
-  width: calc(100% - 50rem);
+  /* width: calc(100% - 50rem); */
   min-width: 500px;
   align-items: center;
   display: grid;

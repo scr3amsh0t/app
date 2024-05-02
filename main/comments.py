@@ -9,10 +9,10 @@ def get_comments(screen_name):
     version = 5.199
     domain = screen_name
     count = 1
-    offset = 2
+    offset = 0
     comments = []
     thread_items_count = 10
-    while offset < 10:                                                  #комменты к первым 50 постам (можно больше)
+    while offset < 50:                                                  #комменты к первым 50 постам (можно больше)
         response = requests.get('https://api.vk.com/method/wall.get',
                                 params={
                                     'access_token': token,
@@ -36,6 +36,7 @@ def get_comments(screen_name):
                                         'count': comments_count,
                                         "thread_items_count": thread_items_count
                                     })
+            
             data = response.json()['response']['items']
             comments.extend(data)
     return comments
@@ -48,6 +49,6 @@ def file_writer_comments(data):
                 file.write("%s\n" % comment['text'])
      
 
-# url = "https://vk.com/scr3amsh0t"
+# url = "https://vk.com/no4vick"
 # comments = get_comments(get_screen_name(get_name(url)))
 # file_writer_comments(comments)                                       #удалить пустые комменты

@@ -81,6 +81,13 @@ form {
     flex-shrink: 0;
   }
   
+  .help-text {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    font-family: Inter, 'Source Sans Pro';
+  }
+  
 input:focus {
     border: 1px solid #97b7d9;
     outline: none;
