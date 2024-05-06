@@ -23,10 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('contact/', views.contact, name='contact'),
-    path('groups/', views.groups, name='groups'),
-    path('account/', views.account, name='account'),
+    path('posts/', views.posts, name='posts'),
+    path('comments/', views.comments, name='comments'),
     path('handle_posts/', views.handle_posts, name='handle_posts'),
     path('handle_comments/', views.handle_comments, name='handle_comments'),
-    path('handle_user_subs/', views.handle_user_subs, name='handle_user_subs'),
-    path('handle_group_members/', views.handle_group_members, name='handle_group_members'),
 ]

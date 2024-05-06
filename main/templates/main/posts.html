@@ -1,0 +1,113 @@
+{% extends "main/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static "deps/styles/groups.css" %}" />
+{% endblock styles %}
+
+{% block wall %}
+<div class="wall">
+    <form id="postsForm" method="GET" action="groups/">
+      <div>
+        {% csrf_token %}
+        <p class="input-text">Вставьте ссылку на сообщество или пользователя:</p>
+        <input style="font-size: 20px;" class="form-control" id="textInput" name="input" placeholder="https://vk.com/example" 
+         value="https://vk.com/" pattern="https://vk.com/.*" required>
+      </div>
+      <div class="radios-div">
+        <ul>
+          <li>
+            <label><input type="radio" id="radio1" name="radio">
+              Анализировать
+              <input type="text" id="points" class="input-number" value=100>
+              последних публикаций
+          </label>
+          </li>
+          <li><label><input type="radio" id="radio2" name="radio">
+            Анализировать все публикации</label>
+          </li>
+          <li style="padding-top:5px">
+            <label><input type="checkbox" id="checkbox1" name="checkbox1">Указать ссылки на публикации</label>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <p class="help-text">Выберите форматы представления данных:</p>
+        <ul>
+            <li>
+              <label><input type="checkbox" id="checkbox2" name="checkbox2">TXT</label>
+            </li>
+            <li>
+              <label><input type="checkbox" id="checkbox3" name="checkbox3">CSV</label>
+            </li>
+            <li>
+              <label><input type="checkbox" id="checkbox4" name="checkbox4">DOCX</label>
+            </li>
+          </ul>
+      </div>
+      <div>   
+        <button class="btn btn-outline-secondary" type="submit" id="submitButton">Отправить</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script>
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+    $(document).ready(function() {
+        function get_posts() {
+            const data = {
+                textInput: $("#textInput").val(),
+              };
+            $.ajax({
+                url: "/handle_posts/", 
+                type: "GET",
+                data: data,
+                success: function(response) {
+                    
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    
+                    console.error(error);
+                }
+            });
+        }        
+        
+        $("#postsForm").submit(function(event) {
+            event.preventDefault();
+            
+            var inputText = $("#textInput").val();
+            var points = $("#points").val();
+            
+            if(inputText === "https://vk.com/") {
+                alert("Пожалуйста, введите данные");
+                return;
+            }
+            
+            if(!$("#radio1").is(":checked") && !$("#radio2").is(":checked")) {
+                alert("Выберите количество публикаций");
+                return;
+            }
+
+            if($("#radio1").is(":checked") && points === "") {
+              alert("Введите количество публикаций");
+              return;
+          }
+
+            if(!$("#checkbox2").is(":checked") && !$("#checkbox3").is(":checked") && !$("#checkbox4").is(":checked")) {
+                alert("Выберите хотя бы один формат импорта данных");
+                return;
+            }
+            
+            if($("#radio1").is(":checked") || $("#radio2").is(":checked")) {
+                get_posts();
+            }
+          });
+        }); 
+    </script>
+
+{% endblock  %}

@@ -1,0 +1,118 @@
+{% extends "main/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static "deps/styles/comments.css" %}" />
+{% endblock styles %}
+
+{% block wall %}
+<div class="wall">
+  <form id="commentsForm" method="GET" action="account/">
+    <div>
+      {% csrf_token %}
+      <p class="input-text">Вставьте ссылку на сообщество или пользователя:</p>
+      <input style="font-size: 20px;" class="form-control" id="textInput" name="input" placeholder="https://vk.com/example" 
+       value="https://vk.com/" pattern="https://vk.com/.*" required>
+    </div>
+    <div>
+      <ul>
+        <li>
+          <label>
+            Анализировать комментарии под
+            <input type="text" id="points" class="input-number" value=50>
+            последними публикациями
+        </label>
+        </li>
+        <li style="padding-top:5px">
+          <label><input type="checkbox" id="checkbox1" name="checkbox1">Указать ссылки на комментарии</label>
+        </li>
+        </li>
+        <li>
+          <label><input type="checkbox" id="checkbox2" name="checkbox2">Указать ссылки на авторов</label>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <p class="help-text">Выберите форматы представления данных:</p>
+      <ul>
+          <li>
+            <label><input type="checkbox" id="checkbox3" name="checkbox3">TXT</label>
+          </li>
+          <li>
+            <label><input type="checkbox" id="checkbox4" name="checkbox4">CSV</label>
+          </li>
+          <li>
+            <label><input type="checkbox" id="checkbox5" name="checkbox5">DOCX</label>
+          </li>
+        </ul>
+    </div>
+    <div>   
+      <button class="btn btn-outline-secondary" type="submit" id="submitButton">Отправить</button>
+    </div>
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+  $.ajaxSetup({
+      data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+  });
+  $(document).ready(function() {
+      function get_comments() {
+          const data = {
+              textInput: $("#textInput").val(),
+            };
+          $.ajax({
+              url: "/handle_comments/", 
+              type: "GET",
+              data: data,
+              success: function(response) {
+                  
+                  console.log(response);
+              },
+              error: function(xhr, status, error) {
+                  
+                  console.error(error);
+              }
+          });
+      }        
+      
+      $("#commentsForm").submit(function(event) {
+          event.preventDefault();
+          
+          var inputText = $("#textInput").val();
+          var points = $("#points").val();
+          
+          if(inputText === "https://vk.com/") {
+              alert("Пожалуйста, введите данные");
+              return;
+          }
+          
+          if(points === "") {
+              alert("Выберите количество комментариев");
+              return;
+          }
+
+          function pointsTest(points) {
+            return !/^[\d]+$/.test(input);
+          }
+
+          if(pointsTest(points)) {
+            alert("Ошибка числа")
+          }
+           
+
+          if(!$("#checkbox3").is(":checked") && !$("#checkbox4").is(":checked") && !$("#checkbox5").is(":checked")) {
+              alert("Выберите хотя бы один формат импорта данных");
+              return;
+          }
+          
+          if(!(points === "")) {
+              get_comments();
+          }
+        });
+      }); 
+  </script>
+
+{% endblock  %}

@@ -6,7 +6,7 @@ html {
 * {
 	margin: 0;
 	padding: 0;
-    outline: none;
+  outline: none;
 }
 
 input {
@@ -80,12 +80,12 @@ form {
     white-space: nowrap;
     flex-shrink: 0;
   }
-
-  .help-text {
-    font-size: 20px;
-    font-weight: 800;
-    color: #ffffff;
-    font-family: Inter, 'Source Sans Pro';
+  
+.help-text {
+  font-size: 20px;
+  font-weight: 800; 
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
   }
   
 input:focus {
@@ -127,6 +127,16 @@ ul li {
     margin-bottom: auto;
 }
 
+.input-number {
+  width: 35px;
+  height: 25px;
+  display:inline-block;
+  font-size: 20px;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  padding: 0px 5px 0px 5px;
+}
+
 input[type=checkbox] {
     width: 14px;
     height: 14px;
@@ -164,10 +174,9 @@ input[type=checkbox] {
     border-color: #6c757d;
   }
 
-
-.footer {
+  .footer {
     width: 100%;
-    bottom:0;  
+    bottom:0; 
     margin-right: auto;
     margin-left: auto;
     background-color: #5683f4;
@@ -205,6 +214,7 @@ input[type=checkbox] {
     font-size: 22px;
   }
 
-  .footer-contacts {
+.footer-contacts {
     padding-bottom: 10px;
   }
+

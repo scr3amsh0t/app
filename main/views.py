@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render
-from main import account_info, posts, comments, user_subscribitions, group_members
+from main import account_info, get_comments, get_posts, user_subscribitions, group_members
 
 
 def index(request):
@@ -16,17 +16,17 @@ def contact(request):
         }
     return render(request, 'main/contact.html', context) 
 
-def groups(request):
+def posts(request):
     context = {
         'title' : 'Поиск запрещеннного контента'
         }
-    return render(request, 'main/groups.html', context) 
+    return render(request, 'main/posts.html', context) 
 
-def account(request):
+def comments(request):
     context = {
         'title' : 'Поиск запрещеннного контента'
         }
-    return render(request, 'main/account.html', context) 
+    return render(request, 'main/comments.html', context) 
 
 def handle_user_subs(request):
     if request.method == 'GET':
@@ -45,9 +45,9 @@ def handle_posts(request):
     if request.method == 'GET':
         data = request.GET
         input = data.get('textInput')
-        screen_name = posts.get_screen_name(posts.get_name(input))
-        posts_count = posts.get_posts_count(screen_name)
-        result = posts.file_writer_posts(posts.get_posts(screen_name, posts_count))
+        screen_name = get_posts.get_screen_name(get_posts.get_name(input))
+        posts_count = get_posts.get_posts_count(screen_name)
+        result = get_posts.file_writer_posts(get_posts.get_posts(screen_name, posts_count))
         return JsonResponse({'result': result})
 
     return JsonResponse({'error': 'Invalid request'})
@@ -57,8 +57,8 @@ def handle_comments(request):
     if request.method == 'GET':
         data = request.GET
         input = data.get('textInput')
-        comms = comments.get_comments(comments.get_screen_name(comments.get_name(input)))
-        result = comments.file_writer_comments(comms)
+        comms = get_comments.get_comments(get_comments.get_screen_name(get_comments.get_name(input)))
+        result = get_comments.file_writer_comments(comms)
         return JsonResponse({'result': result})
     
     return JsonResponse({'error': 'Invalid request'})
