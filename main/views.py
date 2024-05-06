@@ -10,11 +10,11 @@ def index(request):
         }
     return render(request, 'main/index.html', context)
 
-def about(request):
+def contact(request):
     context = {
         'title' : 'Поиск запрещеннного контента'
         }
-    return render(request, 'main/about.html', context) 
+    return render(request, 'main/contact.html', context) 
 
 def groups(request):
     context = {

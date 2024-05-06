@@ -24,7 +24,6 @@ def get_screen_name(name):
                                 'v': version,
                                 'screen_name': name
                             })
-
     screen_name = response.json()['response']['object_id']
     type = response.json()['response']['type']
     if type == 'user':
@@ -32,4 +31,3 @@ def get_screen_name(name):
     else:
         screen_name = -screen_name
     return screen_name
-

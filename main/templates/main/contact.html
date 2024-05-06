@@ -1,0 +1,117 @@
+{% extends "main/base.html" %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static "deps/styles/contact.css" %}" />
+{% endblock styles %}
+
+{% block wall %}
+<div class="wall">
+  {% comment %} <h1 class="main-text"> Текст </h1> {% endcomment %}
+  <form id="contactForm" action="#">
+    <div class="form_item">
+      <label for="formEmail" class="form_label">Email:</label>
+      <input id="formEmail" type="text" name="email" class="form_input _fill _email">
+    </div>
+    <div class="form_item">
+      <label for="formTheme" class="form_label">Тема:</label>
+      <input id="formTheme" type="text" name="theme" class="form_input _fill">
+    </div>
+    <div class="form_item">
+      <label for="formMessage" class="form_label">Сообщение:</label>
+      <textarea name="message" id="formMessage" class="form_input _fill"></textarea>
+    </div>
+    <div class="form_item">
+      <label for="formFile" class="form_label">Прикрепить файл:</label>
+      <div class="file">
+        <div class="file_item">
+          <input id="formFile" accept=".jpg, .jpeg, .png" type="file" name="img" class="file_input">
+          <div class="file_button">Выбрать</div>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="form_button">Отправить</button>
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', sendForm);
+
+    async function sendForm(e) {
+      e.preventDefault();
+
+      let error = validateForm(form);
+
+      let formData = new formData(form);
+      formData.append('image', formFile.files[0]);
+
+      if (error === 0) {
+        
+      }
+  }
+
+  function validateForm(form) {
+    let error = 0;
+    let formFill = document.querySelectorAll('._fill');
+
+    for (let index = 0; index < formFill.length; index++) {
+      const input = formFill[index];
+      formRemoveError(input);
+
+      if (input.classList.contains('_email')) {
+        if (emailTest(input)){
+          alert("Неверный email");
+          formAddError(input);
+          error++;
+        }
+      } else {
+        if (input.value === '') {
+          alert("Заполните пустые поля");
+          formAddError(input);
+          error++;
+        }
+      }
+    }
+  }
+
+  function formAddError(input) {
+    input.parentElement.classList.add('_error');
+    input.classList.add('_error');
+  }
+
+  function formRemoveError(input) {
+    input.parentElement.classList.remove('_error');
+    input.classList.remove('_error');
+  }
+
+  function emailTest(input) {
+    return !/^\w+([\.-]?\w+)*@\w+([\.-]&\w+)*(\.\w{2,8})+$/.test(input.value);
+  }
+
+  const formFile = document.getElementById('formFile');
+  const formPreview = document.getElementById('formPreview');
+  
+  formFile.addEventListener('change', () => {
+    uploadFile(formFile.files[0]);
+  });
+
+  function uploadFile(file) {
+    if (!['image/jpg', 'image/jpeg', 'image/png'].includes(file.type)) {
+      alert('Разрешены только изображения расширения jpg/jpeg/png');
+      formFile.value = '';
+      return;
+    }
+
+    if (file.size > 2*1024*1024) {
+      alert('Файл не должен превышать 2 МБ');
+      return;
+    }
+  }
+
+  });
+</script>
+{% endblock  %}

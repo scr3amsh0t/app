@@ -57,8 +57,8 @@ def file_writer_members(data):
         for item in data:
             file.write("vk.com/id%s\n" % item)
 
-url = "https://vk.com/miet_one"
+# url = "https://vk.com/miet_one"
 
-members_count = get_group_members_count(get_screen_name(get_name(url)))
-members = get_group_members(get_screen_name(get_name(url)), members_count)
-file_writer_members(members)
+# members_count = get_group_members_count(get_screen_name(get_name(url)))
+# members = get_group_members(get_screen_name(get_name(url)), members_count)
+# file_writer_members(members)
