@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render
-from main import account_info, get_comments, get_posts, user_subscribitions, group_members
+from main import get_comments, get_posts
+from django.views.decorators.http import require_POST
 
 
 def index(request):
@@ -12,48 +13,40 @@ def index(request):
 
 def contact(request):
     context = {
-        'title' : 'Поиск запрещеннного контента'
+        'title' : 'Поиск запрещенного контента'
         }
     return render(request, 'main/contact.html', context) 
 
 def posts(request):
     context = {
-        'title' : 'Поиск запрещеннного контента'
+        'title' : 'Поиск запрещенного контента'
         }
     return render(request, 'main/posts.html', context) 
 
 def comments(request):
     context = {
-        'title' : 'Поиск запрещеннного контента'
+        'title' : 'Поиск запрещенного контента'
         }
     return render(request, 'main/comments.html', context) 
 
-def handle_user_subs(request):
-    if request.method == 'GET':
-        data = request.GET
-        input = data.get('textInput')
-        name = user_subscribitions.get_screen_name(user_subscribitions.get_name(input))
-        number = user_subscribitions.get_number_of_subscriptions(name)
-        subs = user_subscribitions.get_user_subscriptions(name, number)
-        result = user_subscribitions.file_writer(subs)
-        return JsonResponse({'result': result})
 
-    return JsonResponse({'error': 'Invalid request'})
-
-
-def handle_posts(request):
-    if request.method == 'GET':
-        data = request.GET
+def handler_posts(request):
+    if request.method == 'POST':
+        data = request.POST
         input = data.get('textInput')
         screen_name = get_posts.get_screen_name(get_posts.get_name(input))
         posts_count = get_posts.get_posts_count(screen_name)
-        result = get_posts.file_writer_posts(get_posts.get_posts(screen_name, posts_count))
-        return JsonResponse({'result': result})
+        posts = get_posts.get_posts(screen_name, 50)
+        json_text = get_posts.make_json(posts)
+        answer = get_posts.posts_txt(get_posts.zapros(json_text))
+        content = answer
+        response = HttpResponse(content, content_type='application/octet-stream')
+        response['Content-Disposition'] = 'attachment; filename="posts.txt"'
+        return response
+    return response
 
-    return JsonResponse({'error': 'Invalid request'})
 
-
-def handle_comments(request):
+def handler_comments(request):
     if request.method == 'GET':
         data = request.GET
         input = data.get('textInput')
@@ -63,14 +56,4 @@ def handle_comments(request):
     
     return JsonResponse({'error': 'Invalid request'})
 
-def handle_group_members(request):
-    if request.method == 'GET':
-        data = request.GET
-        input = data.get('textInput')
-        name = group_members.get_screen_name(group_members.get_name(input))
-        count = group_members.get_group_members_count(name)
-        members = group_members.get_group_members(name, count)
-        result = group_members.file_writer_members(members)
-        return JsonResponse({'result': result})
-    
-    return JsonResponse({'error': 'Invalid request'})
+

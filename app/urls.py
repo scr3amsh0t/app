@@ -25,6 +25,6 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('posts/', views.posts, name='posts'),
     path('comments/', views.comments, name='comments'),
-    path('handle_posts/', views.handle_posts, name='handle_posts'),
-    path('handle_comments/', views.handle_comments, name='handle_comments'),
+    path('get_posts/', views.handler_posts, name='handler_posts'),
+    path('get_comments/', views.handler_comments, name='handler_comments'),
 ]

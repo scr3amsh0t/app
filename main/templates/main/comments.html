@@ -64,11 +64,10 @@
               textInput: $("#textInput").val(),
             };
           $.ajax({
-              url: "/handle_comments/", 
+              url: "/get_comments/", 
               type: "GET",
               data: data,
               success: function(response) {
-                  
                   console.log(response);
               },
               error: function(xhr, status, error) {
@@ -108,9 +107,11 @@
               return;
           }
           
-          if(!(points === "")) {
-              get_comments();
-          }
+          if($("#checkbox3").is(":checked") || $("#checkbox4").is(":checked") || !$("#checkbox5").is(":checked")) {
+            get_comments();
+        }
+          
+
         });
       }); 
   </script>
