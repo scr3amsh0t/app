@@ -78,16 +78,13 @@
                   var blob = new Blob([response], { type: type });
   
                   if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                      // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
                       window.navigator.msSaveBlob(blob, filename);
                   } else {
                       var URL = window.URL || window.webkitURL;
                       var downloadUrl = URL.createObjectURL(blob);
   
                       if (filename) {
-                          // Используем HTML5 a[download] атрибут для спецификации имени файла
                           var a = document.createElement("a");
-                          // Safari не поддерживает данную функцию
                           if (typeof a.download === 'undefined') {
                               window.location = downloadUrl;
                           } else {
@@ -100,7 +97,7 @@
                           window.location = downloadUrl;
                       }
   
-                      setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // Очистка после скачивания
+                      setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); 
                   }
                 },
                 error: function(xhr, status, error) {
@@ -108,9 +105,7 @@
                 }
             });
         }     
-        
-        
-        
+            
         
         $("#postsForm").submit(function(event) {
             event.preventDefault();

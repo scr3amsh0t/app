@@ -83,7 +83,7 @@ def zapros(data):
         answers = response.json()
         return answers
     if (response.status_code != 200 & response.status_code != 200): 
-        print("Проблема")
+
         print(response.status_code)
 
 def posts_txt(data):
