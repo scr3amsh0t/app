@@ -35,7 +35,7 @@ def get_posts(screen_name, posts_count):
     posts = []
     if posts_count > 100:
         count_count = 100
-        while offset < posts_count:
+        while (offset+100) < posts_count:
             response = requests.get('https://api.vk.com/method/wall.get',
                                     params={
                                         'access_token': token,
@@ -44,9 +44,24 @@ def get_posts(screen_name, posts_count):
                                         'count': count_count,
                                         'offset': offset
                                     })
+            print(response.json())
             data = response.json()['response']['items']
             offset += 100
             posts.extend(data)
+        print(offset)
+        count_count = posts_count - offset
+        print(count_count)
+        response = requests.get('https://api.vk.com/method/wall.get',
+                                params={
+                                    'access_token': token,
+                                    'v': version,
+                                    'owner_id': owner_id,
+                                    'count': count_count,
+                                    'offset': offset
+                                })
+        data = response.json()['response']['items']
+        posts.extend(data)
+        print(data)
     else:
         response = requests.get('https://api.vk.com/method/wall.get',
                                 params={
@@ -58,6 +73,7 @@ def get_posts(screen_name, posts_count):
                                 })
         data = response.json()['response']['items']
         posts.extend(data)
+        print(data)
     return posts
 
 def make_json(data):
@@ -83,7 +99,6 @@ def zapros(data):
         answers = response.json()
         return answers
     if (response.status_code != 200 & response.status_code != 200): 
-
         print(response.status_code)
 
 def posts_txt(data):
@@ -94,12 +109,18 @@ def posts_txt(data):
 
 
 def posts_txt_with_id(data):
-    with open('posts_with_id.txt', 'a', newline='', encoding="utf-8") as file:
-        for post in data:
-            post_id = "https://vk.com/wall" + str(post['from_id']) + "_" + str(post['id'])
-            text = post_id + "\n" + post['text']
-            text = text.strip()
-            file.write("%s\n" % text)
+    text = ''
+    for answer in data:
+        text += "\nTeкст поста:\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result'])
+    return text
+
+
+    # with open('posts_with_id.txt', 'a', newline='', encoding="utf-8") as file:
+    #     for post in data:
+    #         post_id = "https://vk.com/wall" + str(post['from_id']) + "_" + str(post['id'])
+    #         text = post_id + "\n" + post['text']
+    #         text = text.strip()
+    #         file.write("%s\n" % text)
 
 
 def posts_csv(data):

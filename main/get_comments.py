@@ -19,11 +19,11 @@ def get_comments(screen_name):
     token = 'vk1.a.byMJTaFR8uzQ2VOgF72GpGczOd0RnOu1YBVklpdL9Rnndd-5TSH1FGz94XMiFgw4b13TFUQNikYHk79VQ5jwJ7GHKIoVZb3No7t97wJZTlgj5iqirPrXCXikDQOuSewYbYUbwuMb7kth4YqsAC8pDxBE-ax68I0qYiEHhkFnumJo3HzsWxRgvfPKwMck6jl1IDxVnpZ_uTGQMAZa2Kl9Xg'
     version = 5.199
     domain = screen_name
-    count = 2
+    count = 1
     offset = 0
     comments = []
     thread_items_count = 10
-    while offset < 2:                                                
+    while offset < count:                                                
         response = requests.get('https://api.vk.com/method/wall.get',
                                 params={
                                     'access_token': token,
@@ -81,8 +81,8 @@ def comments_txt_with_id(data):
             file.write("%s\n" % text)
 
 
-def comment_csv(data):
-    with open('comment.csv', 'w', newline='', encoding="utf-8-sig") as file:
+def comments_csv(data):
+    with open('comments.csv', 'w', newline='', encoding="utf-8-sig") as file:
         for comment in data:
             writer = csv.writer(file)
             writer.writerow([comment['text']])

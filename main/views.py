@@ -36,7 +36,7 @@ def handler_posts(request):
         input = data.get('textInput')
         screen_name = get_posts.get_screen_name(get_posts.get_name(input))
         posts_count = get_posts.get_posts_count(screen_name)
-        posts = get_posts.get_posts(screen_name, 1000)
+        posts = get_posts.get_posts(screen_name, 10)
         json_text = get_posts.make_json(posts)
         answer = get_posts.posts_txt(get_posts.zapros(json_text))
         content = answer

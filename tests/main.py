@@ -17,7 +17,6 @@ class TestURLFunctions(unittest.TestCase):
 
     @patch('main.requests.get')
     def test_get_screen_name(self, mock_get):
-        # Мокаем ответ от API
         mock_response = {
             'response': {
                 'object_id': 12345,
