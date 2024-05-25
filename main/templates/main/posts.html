@@ -61,6 +61,12 @@
         function get_posts() {
             const data = {
                 textInput: $("#textInput").val(),
+                points: $("#points").val(),
+                radio1: $("#radio1").prop("checked") ? "on" : "off",
+                radio2: $("#radio2").prop("checked") ? "on" : "off",
+                check2: $("#checkbox2").prop("checked") ? "on" : "off",
+                check3: $("#checkbox3").prop("checked") ? "on" : "off",
+                check4: $("#checkbox4").prop("checked") ? "on" : "off",
               };
             $.ajax({
                 url: "/get_posts/", 
@@ -132,6 +138,10 @@
                 alert("Выберите хотя бы один формат импорта данных");
                 return;
             }
+
+          if(points < 0) {
+            alert("Введите положительное число");
+        }
             
             if($("#radio1").is(":checked") || $("#radio2").is(":checked")) {
                 get_posts();
