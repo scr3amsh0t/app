@@ -27,4 +27,5 @@ urlpatterns = [
     path('comments/', views.comments, name='comments'),
     path('get_posts/', views.handler_posts, name='handler_posts'),
     path('get_comments/', views.handler_comments, name='handler_comments'),
+    path('success/', views.success, name='success')
 ]

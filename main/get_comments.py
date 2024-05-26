@@ -1,4 +1,3 @@
-from openpyxl import load_workbook
 import time
 import logging
 import json
@@ -6,7 +5,6 @@ import csv
 import docx
 
 import requests
-from main.main import get_name, get_screen_name
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

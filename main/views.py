@@ -1,33 +1,38 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.core.mail import EmailMessage
 from main import get_comments, get_posts
-from django.views.decorators.http import require_POST
+
+from main.forms import EmailPostForm
 
 
 def index(request):
     context = {
-        'title' : 'Поиск запрещенного контента'
-        }
+        'title': 'Поиск запрещенного контента'
+    }
     return render(request, 'main/index.html', context)
+
 
 def contact(request):
     context = {
-        'title' : 'Поиск запрещенного контента'
-        }
-    return render(request, 'main/contact.html', context) 
+        'title': 'Поиск запрещенного контента'
+    }
+    return render(request, 'main/contact.html', context)
+
 
 def posts(request):
     context = {
-        'title' : 'Поиск запрещенного контента'
-        }
-    return render(request, 'main/posts.html', context) 
+        'title': 'Поиск запрещенного контента'
+    }
+    return render(request, 'main/posts.html', context)
+
 
 def comments(request):
     context = {
-        'title' : 'Поиск запрещенного контента'
-        }
-    return render(request, 'main/comments.html', context) 
+        'title': 'Поиск запрещенного контента'
+    }
+    return render(request, 'main/comments.html', context)
 
 
 def handler_posts(request):
@@ -53,7 +58,41 @@ def handler_comments(request):
         comms = get_comments.get_comments(get_comments.get_screen_name(get_comments.get_name(input)))
         result = get_comments.file_writer_comments(comms)
         return JsonResponse({'result': result})
-    
+
     return JsonResponse({'error': 'Invalid request'})
 
 
+def post_share(request):
+    if request.method == 'POST':
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+
+            subject = form.formTheme
+            body = f'''
+                email для связи: {form.formMessage}
+                
+                Текст обращения:
+                {form.formMessage}
+            '''
+
+            file = form.cleaned_data['formFile']
+
+            email = EmailMessage(
+                subject,
+                body,
+                'explicitdetectionapp@gmail.com',
+                ['explicitdetectionapp@gmail.com']
+            )
+
+            if file:
+                email.attach(file.name, file.read(), file.content_type)
+
+            email.send()
+
+            return redirect('success')
+
+    return contact(request)
+
+
+def success(request):
+    return render(request, 'success.html')
