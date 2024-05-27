@@ -64,15 +64,15 @@ def handler_comments(request):
 
 def post_share(request):
     if request.method == 'POST':
+        data = request.POST
         form = EmailPostForm(request.POST)
         if form.is_valid():
-
-            subject = form.formTheme
+            subject = form.cleaned_data['formTheme']
             body = f'''
-                email для связи: {form.formMessage}
+                email для связи: {form.cleaned_data['formEmail']}
                 
                 Текст обращения:
-                {form.formMessage}
+                {form.cleaned_data['formMessage']}
             '''
 
             file = form.cleaned_data['formFile']
@@ -83,16 +83,16 @@ def post_share(request):
                 'explicitdetectionapp@gmail.com',
                 ['explicitdetectionapp@gmail.com']
             )
-
             if file:
                 email.attach(file.name, file.read(), file.content_type)
 
             email.send()
-
-            return redirect('success')
-
+            return success(request)
     return contact(request)
 
 
 def success(request):
-    return render(request, 'success.html')
+    context = {
+        'title': 'Поиск запрещенного контента'
+    }
+    return render(request, 'main/success.html', context)
