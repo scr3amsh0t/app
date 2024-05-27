@@ -1,35 +1,41 @@
 from io import BytesIO
 from django.http import HttpResponse, HttpResponseNotFound
 from django.http import FileResponse
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
 from main import get_comments, get_posts
+from django.core.mail import EmailMessage
 import os
 from django.views.decorators.http import require_POST
+from main.forms import EmailPostForm
 
 
 def index(request):
     context = {
-        'title' : 'Поиск запрещенного контента'
-        }
+        'title': 'Поиск запрещенного контента'
+    }
     return render(request, 'main/index.html', context)
+
 
 def contact(request):
     context = {
-        'title' : 'Поиск запрещенного контента'
-        }
-    return render(request, 'main/contact.html', context) 
+        'title': 'Поиск запрещенного контента'
+    }
+    return render(request, 'main/contact.html', context)
+
 
 def posts(request):
     context = {
-        'title' : 'Поиск запрещенного контента'
-        }
-    return render(request, 'main/posts.html', context) 
+        'title': 'Поиск запрещенного контента'
+    }
+    return render(request, 'main/posts.html', context)
+
 
 def comments(request):
     context = {
-        'title' : 'Поиск запрещенного контента'
-        }
-    return render(request, 'main/comments.html', context) 
+        'title': 'Поиск запрещенного контента'
+    }
+    return render(request, 'main/comments.html', context)
 
 
 def handler_posts(request):
@@ -96,3 +102,37 @@ def handler_comments(request):
     return response
 
 
+def post_share(request):
+    if request.method == 'POST':
+        data = request.POST
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['formTheme']
+            body = f'''
+                email для связи: {form.cleaned_data['formEmail']}
+                
+                Текст обращения:
+                {form.cleaned_data['formMessage']}
+            '''
+
+            file = form.cleaned_data['formFile']
+
+            email = EmailMessage(
+                subject,
+                body,
+                'explicitdetectionapp@gmail.com',
+                ['explicitdetectionapp@gmail.com']
+            )
+            if file:
+                email.attach(file.name, file.read(), file.content_type)
+
+            email.send()
+            return success(request)
+    return contact(request)
+
+
+def success(request):
+    context = {
+        'title': 'Поиск запрещенного контента'
+    }
+    return render(request, 'main/success.html', context)

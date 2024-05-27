@@ -9,24 +9,25 @@
 {% block wall %}
 <div class="wall">
   {% comment %} <h1 class="main-text"> Текст </h1> {% endcomment %}
-  <form id="contactForm" action="#">
+  <form id="contactForm" method="POST" enctype="multipart/form-data" action="success/" >
+    {% csrf_token %}
     <div class="form_item">
       <label for="formEmail" class="form_label">Email:</label>
-      <input id="formEmail" type="text" name="email" class="form_input _fill _email">
+      <input id="formEmail" type="text" name="formEmail" class="form_input _fill _email">
     </div>
     <div class="form_item">
       <label for="formTheme" class="form_label">Тема:</label>
-      <input id="formTheme" type="text" name="theme" class="form_input _fill">
+      <input id="formTheme" type="text" name="formTheme" class="form_input _fill">
     </div>
     <div class="form_item">
       <label for="formMessage" class="form_label">Сообщение:</label>
-      <textarea name="message" id="formMessage" class="form_input _fill"></textarea>
+      <textarea name="formMessage" id="formMessage" class="form_input _fill"></textarea>
     </div>
     <div class="form_item">
       <label for="formFile" class="form_label">Прикрепить файл:</label>
       <div class="file">
         <div class="file_item">
-          <input id="formFile" accept=".jpg, .jpeg, .png" type="file" name="img" class="file_input">
+          <input id="formFile" accept=".jpg, .jpeg, .png" type="file" name="formFile" class="file_input">
           <div class="file_button">Выбрать</div>
         </div>
       </div>
@@ -35,7 +36,7 @@
   </form>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+{% comment %} <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('contactForm');
@@ -113,5 +114,5 @@
   }
 
   });
-</script>
+</script>  {% endcomment %}
 {% endblock  %}
