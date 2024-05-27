@@ -62,6 +62,10 @@
       function get_comments() {
           const data = {
               textInput: $("#textInput").val(),
+              points: $("#points").val(),
+              check3: $("#checkbox3").prop("checked") ? "on" : "off",
+              check4: $("#checkbox4").prop("checked") ? "on" : "off",
+              check5: $("#checkbox5").prop("checked") ? "on" : "off",
             };
           $.ajax({
               url: "/get_comments/", 
@@ -135,8 +139,6 @@
           if($("#checkbox3").is(":checked") || $("#checkbox4").is(":checked") || !$("#checkbox5").is(":checked")) {
             get_comments();
         }
-          
-
         });
       }); 
   </script>

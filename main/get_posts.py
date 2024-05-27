@@ -4,6 +4,8 @@ import json
 import csv
 import docx
 import logging
+from django.conf import settings
+import os
 
 # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 # logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -79,8 +81,7 @@ def make_json(data):
     data = []
     for text in texts:
         data.append({"text": text})
-    json_data = data
-    return json_data
+    return data
 
 
 url_module_2 = 'http://localhost:8002/api'
@@ -92,32 +93,39 @@ def zapros(data):
     while (response.status_code != 200):
         response = requests.get(f'{url_module_2}/{token}')
         answers = response.json()
-        return answers
     if (response.status_code != 200 & response.status_code != 200): 
         print(response.status_code)
+    return answers
 
 def posts_txt(data):
     text = ''
     i = 1
     for answer in data:
-        text += "\nTeкст поста " + str(i) + ":\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result'])
+        text += "Teкст поста " + str(i) + ":\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result']) + "\n"
         i+=1
     return text
 
 
-def posts_txt_with_id(data):
-    text = ''
+def posts_txt_with_id(data, posts):
+    text = []
+    i = 1
+    j = 1
+    for post in posts:
+        text.append("Ссылка на пост " + str(i) + ":https://vk.com/wall" + str(post['from_id']) + "_" + str(post['id']) + "\n")
+        i+=1
     for answer in data:
-        text += "\nTeкст поста:\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result'])
+        text.append("\nTeкст поста " + str(j) + ":\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result']) + "\n")
+        j+=1
     return text
 
-
-
 def posts_csv(data):
-    with open('posts.csv', 'w', newline='', encoding="utf-8-sig") as file:
-        for post in data:
-            writer = csv.writer(file)
-            writer.writerow([post['text']])
+    text = ''
+    i = 1
+    for answer in data:
+        text += "Teкст поста " + str(i) + ":\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result']) + "\n"
+        i+=1
+    return text
+
 
 def posts_csv_with_id(data):
     with open('posts_with_id.csv', 'w', newline='', encoding="utf-8-sig") as file:
@@ -128,9 +136,15 @@ def posts_csv_with_id(data):
 
 def posts_docx(data):
     doc = docx.Document()
+    i = 1
     for post in data:
-        doc.add_paragraph(post['text'])
-        doc.save("posts.docx")
+        paragraph = doc.add_paragraph()
+        paragraph.add_run("Teкст поста " + str(i) + ":\n" + post['text'] + "\nЗапрещенный контент найден?: " + str(post['result']))
+        i+=1
+        file_path = "posts.docx"
+        doc.save(file_path)
+    return file_path
+
 
 def posts_docx_with_id(data):
     doc = docx.Document()
@@ -138,9 +152,3 @@ def posts_docx_with_id(data):
         post_id = "https://vk.com/wall" + str(post['from_id']) + "_" + str(post['id'])
         doc.add_paragraph([post_id, post['text']])
         doc.save("posts_with_id.docx")
-
-
-# url = "https://vk.com/club220973532"
-# name = get_screen_name(get_name(url))
-# post = get_posts(name, 80)
-# posts_txt(zapros(make_json(post)))
