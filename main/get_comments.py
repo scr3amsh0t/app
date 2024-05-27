@@ -3,17 +3,16 @@ import logging
 import json
 import csv
 import docx
-
 import requests
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
-logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
-logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s - %(levelname)s - %(message)s')
+# logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
+# logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
+# logging.basicConfig(level=logging.CRITICAL, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-def get_comments(screen_name):
+def get_comments(screen_name,posts_count):
     token = 'vk1.a.byMJTaFR8uzQ2VOgF72GpGczOd0RnOu1YBVklpdL9Rnndd-5TSH1FGz94XMiFgw4b13TFUQNikYHk79VQ5jwJ7GHKIoVZb3No7t97wJZTlgj5iqirPrXCXikDQOuSewYbYUbwuMb7kth4YqsAC8pDxBE-ax68I0qYiEHhkFnumJo3HzsWxRgvfPKwMck6jl1IDxVnpZ_uTGQMAZa2Kl9Xg'
     version = 5.199
     domain = screen_name
@@ -21,7 +20,7 @@ def get_comments(screen_name):
     offset = 0
     comments = []
     thread_items_count = 10
-    while offset < count:                                                
+    while offset < int(posts_count):
         response = requests.get('https://api.vk.com/method/wall.get',
                                 params={
                                     'access_token': token,
@@ -45,10 +44,25 @@ def get_comments(screen_name):
                                         'count': comments_count,
                                         "thread_items_count": thread_items_count
                                     })
-            
             data = response.json()['response']['items']
             comments.extend(data)
     return comments
+
+def make_json(data):
+    texts = []
+    for comment in data:
+        if comment['text'] != '':
+            texts.append(comment['text'])
+        threads = comment['thread']['items']
+        for thread in threads:
+                if thread['text'] != '':
+                    texts.append(thread['text'])
+    texts = [line.replace("\n", "") for line in texts]
+    data = []
+    for text in texts:
+        data.append({"text": text})
+    return data
+
 
 url_module_2 = 'http://localhost:8002/api'
 
@@ -65,8 +79,10 @@ def zapros(data):
      
 def comments_txt(data):
     text = ''
+    i = 1
     for answer in data:
-        text += "\nTeкст комментария:\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result'])
+        text += "Teкст комментария " + str(i) + ":\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result'] + "\n")
+        i+=1
     return text
 
 

@@ -61,51 +61,50 @@
         function get_posts() {
             const data = {
                 textInput: $("#textInput").val(),
+                points: $("#points").val(),
+                radio1: $("#radio1").prop("checked") ? "on" : "off",
+                radio2: $("#radio2").prop("checked") ? "on" : "off",
+                check1: $("#checkbox1").prop("checked") ? "on" : "off",
+                check2: $("#checkbox2").prop("checked") ? "on" : "off",
+                check3: $("#checkbox3").prop("checked") ? "on" : "off",
+                check4: $("#checkbox4").prop("checked") ? "on" : "off",
               };
             $.ajax({
                 url: "/get_posts/", 
                 type: "POST",
                 data: data,
-                success: function(response, status, xhr) {
-                  var filename = ""; 
-                  var disposition = xhr.getResponseHeader('Content-Disposition');
-                  if (disposition) {
-                      var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                      var matches = filenameRegex.exec(disposition);
-                      if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                  }
-                  var type = xhr.getResponseHeader('Content-Type');
-                  var blob = new Blob([response], { type: type });
+                xhrFields: {
+                  responseType: 'blob' // Specify that the response type is a blob
+              },
+              success: function(response, status, xhr) {
+                var blob = new Blob([response], { type: xhr.getResponseHeader('Content-Type') });
+    
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = getFileNameFromDisposition(xhr.getResponseHeader('Content-Disposition'));
   
-                  if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                      window.navigator.msSaveBlob(blob, filename);
-                  } else {
-                      var URL = window.URL || window.webkitURL;
-                      var downloadUrl = URL.createObjectURL(blob);
-  
-                      if (filename) {
-                          var a = document.createElement("a");
-                          if (typeof a.download === 'undefined') {
-                              window.location = downloadUrl;
-                          } else {
-                              a.href = downloadUrl;
-                              a.download = filename;
-                              document.body.appendChild(a);
-                              a.click();
-                          }
-                      } else {
-                          window.location = downloadUrl;
-                      }
-  
-                      setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); 
-                  }
-                },
+                document.body.appendChild(link);
+                link.click();
+    
+                document.body.removeChild(link);
+            },
                 error: function(xhr, status, error) {
                     console.error(error);
                 }
             });
-        }     
-            
+        }  
+
+        function getFileNameFromDisposition(contentDisposition) {
+          var fileName = '';
+          if (contentDisposition && contentDisposition.indexOf('attachment') !== -1) {
+              var matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
+              if (matches != null && matches[1]) {
+                  fileName = matches[1].replace(/['"]/g, '');
+              }
+          }
+          return fileName;
+      } 
+        
         
         $("#postsForm").submit(function(event) {
             event.preventDefault();
@@ -132,6 +131,10 @@
                 alert("Выберите хотя бы один формат импорта данных");
                 return;
             }
+
+          if(points < 0) {
+            alert("Введите положительное число");
+        }
             
             if($("#radio1").is(":checked") || $("#radio2").is(":checked")) {
                 get_posts();
