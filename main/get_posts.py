@@ -108,14 +108,9 @@ def posts_txt(data):
 
 def posts_txt_with_id(data, posts):
     text = []
-    i = 1
-    j = 1
-    for post in posts:
-        text.append("Ссылка на пост " + str(i) + ":https://vk.com/wall" + str(post['from_id']) + "_" + str(post['id']) + "\n")
-        i+=1
-    for answer in data:
-        text.append("\nTeкст поста " + str(j) + ":\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result']) + "\n")
-        j+=1
+    for i in range(len(data)):
+        text.append("Teкст поста " + str(i+1) + ":\n" + str(data[i]['text']) + "\nЗапрещенный контент найден?: " + str(data[i]['result']) + "\n")
+        text.append("Ссылка на пост:"+ " \nhttps://vk.com/wall" + str(posts[i]['from_id']) + "_" + str(posts[i]['id']) + "\n\n")        
     return text
 
 def posts_csv(data):

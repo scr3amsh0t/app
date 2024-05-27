@@ -1,3 +1,4 @@
+from io import BytesIO
 from django.http import HttpResponse, HttpResponseNotFound
 from django.http import FileResponse
 from django.shortcuts import render
@@ -60,10 +61,19 @@ def handler_posts(request):
                 content = get_posts.posts_txt(get_posts.zapros(json_text))
                 response = HttpResponse(content, content_type='application/octet-stream')
                 response['Content-Disposition'] = 'attachment; filename="posts.txt"'
+            if check3 == 'on':
+                content = 'boris.csv'
+                with open(content, 'rb') as f:
+                    a = BytesIO(f.read())
+                    print(a.getbuffer().nbytes)
+                    response = FileResponse(a, content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                    response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(content)
             if check4 == 'on':
                 content = get_posts.posts_docx(get_posts.zapros(json_text))
                 with open(content, 'rb') as f:
-                    response = HttpResponse(f.read(), content_type='application/octet-stream')
+                    a = BytesIO(f.read())
+                    print(a.getbuffer().nbytes)
+                    response = FileResponse(a, content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
                     response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(content)
     return response
         

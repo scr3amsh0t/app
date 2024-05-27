@@ -83,7 +83,7 @@ def comments_txt(data):
     text = ''
     i = 1
     for answer in data:
-        text += "\nTeкст комментария " + str(i) + ":\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result'])
+        text += "Teкст комментария " + str(i) + ":\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result'] + "\n")
         i+=1
     return text
 
