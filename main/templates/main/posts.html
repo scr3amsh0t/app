@@ -74,7 +74,7 @@
                 type: "POST",
                 data: data,
                 xhrFields: {
-                  responseType: 'blob' // Specify that the response type is a blob
+                  responseType: 'blob' 
               },
               success: function(response, status, xhr) {
                 var blob = new Blob([response], { type: xhr.getResponseHeader('Content-Type') });

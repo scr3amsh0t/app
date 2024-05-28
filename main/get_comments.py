@@ -1,4 +1,6 @@
 import time
+import requests
+from main.main import get_name, get_screen_name
 import logging
 import json
 import csv
@@ -73,50 +75,60 @@ def zapros(data):
     while (response.status_code != 200):
         response = requests.get(f'{url_module_2}/{token}')
         answers = response.json()
-        return answers
     if (response.status_code != 200 & response.status_code != 200): 
         print(response.status_code)
+    return answers
      
 def comments_txt(data):
     text = ''
     i = 1
     for answer in data:
-        text += "Teкст комментария " + str(i) + ":\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result'] + "\n")
+        text += "Teкст комментария " + str(i) + ":\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result']) + "\n"
         i+=1
     return text
 
 
-def comments_txt_with_id(data):
-    with open('comments_with_id.txt', 'a', newline='', encoding="utf-8") as file:
-        for comment in data:
-            post_id = "https://vk.com/wall" + str(comment['from_id']) + "_" + str(comment['id'])
-            text = post_id + "\n" + comment['text']
-            text = text.strip()
-            file.write("%s\n" % text)
+# def comments_txt_with_id(data):
+#     with open('comments_with_id.txt', 'a', newline='', encoding="utf-8") as file:
+#         for comment in data:
+#             post_id = "https://vk.com/wall" + str(comment['from_id']) + "_" + str(comment['id'])
+#             text = post_id + "\n" + comment['text']
+#             text = text.strip()
+#             file.write("%s\n" % text)
 
 
 def comments_csv(data):
-    with open('comments.csv', 'w', newline='', encoding="utf-8-sig") as file:
+    with open('comments.csv', 'w', newline='', encoding='utf-8') as f:
+        csv_writer = csv.writer(f)
+        csv_writer.writerow(['Номер комментария', 'Текст комментария', 'Запрещенный контент найден?'])
+        i = 1
         for comment in data:
-            writer = csv.writer(file)
-            writer.writerow([comment['text']])
+            csv_writer.writerow([i, comment['text'], comment['result']])
+            i+=1
+    return 'comments.csv'
 
-def comments_csv_with_id(data):
-    with open('comments_with_id.csv', 'w', newline='', encoding="utf-8-sig") as file:
-        for comment in data:
-            comment_id = "https://vk.com/wall" + str(comment['from_id']) + "_" + str(comment['id'])
-            writer = csv.writer(file)
-            writer.writerow([comment_id, comment['text']])
+# def comments_csv_with_id(data):
+#     with open('comments_with_id.csv', 'w', newline='', encoding="utf-8-sig") as file:
+#         for comment in data:
+#             comment_id = "https://vk.com/wall" + str(comment['from_id']) + "_" + str(comment['id'])
+#             writer = csv.writer(file)
+#             writer.writerow([comment_id, comment['text']])
 
 def comments_docx(data):
     doc = docx.Document()
+    i = 1
     for comment in data:
-        doc.add_paragraph(comment['text'])
-        doc.save("comments.docx")
+        paragraph = doc.add_paragraph()
+        paragraph.add_run("Teкст комментария " + str(i) + ":\n" + comment['text'] + "\nЗапрещенный контент найден?: " + str(comment['result']))
+        i+=1
+        file_path = "comments.docx"
+        doc.save(file_path)
+    return file_path
 
-def comments_docx_with_id(data):
-    doc = docx.Document()
-    for comment in data:
-        comment_id = "https://vk.com/wall" + str(comment['from_id']) + "_" + str(comment['id'])
-        doc.add_paragraph([comment_id, comment['text']])
-        doc.save("comments_with_id.docx")
+
+# def comments_docx_with_id(data):
+#     doc = docx.Document()
+#     for comment in data:
+#         comment_id = "https://vk.com/wall" + str(comment['from_id']) + "_" + str(comment['id'])
+#         doc.add_paragraph([comment_id, comment['text']])
+#         doc.save("comments_with_id.docx")

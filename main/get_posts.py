@@ -105,7 +105,6 @@ def posts_txt(data):
         i+=1
     return text
 
-
 def posts_txt_with_id(data, posts):
     text = []
     for i in range(len(data)):
@@ -114,20 +113,24 @@ def posts_txt_with_id(data, posts):
     return text
 
 def posts_csv(data):
-    text = ''
-    i = 1
-    for answer in data:
-        text += "Teкст поста " + str(i) + ":\n" + str(answer['text']) + "\nЗапрещенный контент найден?: " + str(answer['result']) + "\n"
-        i+=1
-    return text
-
-
-def posts_csv_with_id(data):
-    with open('posts_with_id.csv', 'w', newline='', encoding="utf-8-sig") as file:
+    with open('posts.csv', 'w', newline='', encoding='utf-8') as f:
+        csv_writer = csv.writer(f)
+        csv_writer.writerow(['Номер поста', 'Текст поста', 'Запрещенный контент найден?'])
+        i = 1
         for post in data:
-            post_id = "https://vk.com/wall" + str(post['from_id']) + "_" + str(post['id'])
-            writer = csv.writer(file)
-            writer.writerow([post_id, post['text']])
+            csv_writer.writerow([i, post['text'], post['result']])
+            i+=1
+    return 'posts.csv'
+
+def posts_csv_with_id(data, posts):
+    with open('posts_id.csv', 'w', newline='', encoding='utf-8') as f:
+        csv_writer = csv.writer(f)
+        csv_writer.writerow(['Номер поста', 'Текст поста', 'Запрещенный контент найден?', 'Ссылка на пост'])
+        j = 1
+        for i in range(len(data)):
+            csv_writer.writerow([j, data[i]['text'], data[i]['result'], 'https://vk.com/wall' + str(posts[i]['from_id']) + '_' + str(posts[i]['id'])])
+            j+=1
+    return 'posts_id.csv'
 
 def posts_docx(data):
     doc = docx.Document()
@@ -140,10 +143,11 @@ def posts_docx(data):
         doc.save(file_path)
     return file_path
 
-
-def posts_docx_with_id(data):
+def posts_docx_with_id(data, posts):
     doc = docx.Document()
-    for post in data:
-        post_id = "https://vk.com/wall" + str(post['from_id']) + "_" + str(post['id'])
-        doc.add_paragraph([post_id, post['text']])
-        doc.save("posts_with_id.docx")
+    for i in range(len(data)):
+        paragraph = doc.add_paragraph()
+        paragraph.add_run("Teкст поста " + str(i+1) + ":\n" + str(data[i]['text']) + "\nЗапрещенный контент найден?: " + str(data[i]['result']) + "\n" + "Ссылка на пост:"+ " \nhttps://vk.com/wall" + str(posts[i]['from_id']) + "_" + str(posts[i]['id']) + "\n")
+        file_path = "posts_id.docx"
+        doc.save(file_path)
+    return file_path
