@@ -20,7 +20,7 @@
           <li>
             <label><input type="radio" id="radio1" name="radio">
               Анализировать
-              <input type="text" id="points" class="input-number" value=100>
+              <input type="text" id="points" class="input-number" value=50>
               последних публикаций
           </label>
           </li>
@@ -138,6 +138,7 @@
             
             if($("#radio1").is(":checked") || $("#radio2").is(":checked")) {
                 get_posts();
+                
             }
           });
         }); 

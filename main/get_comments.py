@@ -5,7 +5,6 @@ import logging
 import json
 import csv
 import docx
-import requests
 
 # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 # logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -65,6 +64,29 @@ def make_json(data):
         data.append({"text": text})
     return data
 
+def make_id_json(data):
+    ids = []
+    for comment in data:
+        ids.append(comment['from_id'])
+        threads = comment['thread']['items']
+        for thread in threads:
+                ids.append(thread['from_id'])
+    from_id = []
+    for id in ids:
+        from_id.append({"from_id" : id})
+    return from_id
+
+def make_comment_id_json(data):
+    comm_ids = []
+    for comment in data:
+        comm_ids.append((comment['id'], comment['parents_stack']))
+        threads = comment['thread']['items']
+        for thread in threads:
+                comm_ids.append((thread['id'], thread['parents_stack']))
+    comm_id = []
+    for id, parents in comm_ids:
+        comm_id.append({"id" : id, "parents" : parents})
+    return comm_id
 
 url_module_2 = 'http://localhost:8002/api'
 
@@ -87,15 +109,21 @@ def comments_txt(data):
         i+=1
     return text
 
+def comments_txt_with_id(data, from_id):
+    text = []
+    for i in range(len(data)):
+        text.append("Teкст комментария " + str(i+1) + ":\n" + str(data[i]['text']) + "\nЗапрещенный контент найден?: " + str(data[i]['result']) + "\n")
+        text.append("Ссылка на автора:" + " \nhttps://vk.com/id" + str(from_id[i]['from_id']) + "\n\n")        
+    return text
 
-# def comments_txt_with_id(data):
-#     with open('comments_with_id.txt', 'a', newline='', encoding="utf-8") as file:
-#         for comment in data:
-#             post_id = "https://vk.com/wall" + str(comment['from_id']) + "_" + str(comment['id'])
-#             text = post_id + "\n" + comment['text']
-#             text = text.strip()
-#             file.write("%s\n" % text)
-
+def comments_txt_with_comm_id(data, comms, comms_id):
+    text = []
+    for i in comms:
+        a = ("Ссылка: " + "https://vk.com/wall" + str(i['owner_id']) + "_" + str(i['post_id']))
+    for i in range(len(data)):
+        text.append("Текст комментария " + str(i+1) + ":\n" + str(data[i]['text']) + "\nЗапрещенный контент найден?: " + str(data[i]['result']) + "\n")
+        text.append(str(a) + "?reply=" + str(comms_id[i]['id']) + "\n\n")
+    return text
 
 def comments_csv(data):
     with open('comments.csv', 'w', newline='', encoding='utf-8') as f:
@@ -107,12 +135,15 @@ def comments_csv(data):
             i+=1
     return 'comments.csv'
 
-# def comments_csv_with_id(data):
-#     with open('comments_with_id.csv', 'w', newline='', encoding="utf-8-sig") as file:
-#         for comment in data:
-#             comment_id = "https://vk.com/wall" + str(comment['from_id']) + "_" + str(comment['id'])
-#             writer = csv.writer(file)
-#             writer.writerow([comment_id, comment['text']])
+def comments_csv_with_id(data, from_id):
+        with open('comments_with_author_id.csv', 'w', newline='', encoding='utf-8') as f:
+            csv_writer = csv.writer(f)
+            csv_writer.writerow(['Номер комментария', 'Текст комментария', 'Запрещенный контент найден?', 'Ссылка на автора'])
+            j = 1
+            for i in range(len(data)):
+                csv_writer.writerow([j, data[i]['text'], data[i]['result'], 'https://vk.com/id' + str(from_id[i]['from_id'])])
+                j+=1
+        return 'comments_with_author_id.csv'
 
 def comments_docx(data):
     doc = docx.Document()
@@ -126,9 +157,12 @@ def comments_docx(data):
     return file_path
 
 
-# def comments_docx_with_id(data):
-#     doc = docx.Document()
-#     for comment in data:
-#         comment_id = "https://vk.com/wall" + str(comment['from_id']) + "_" + str(comment['id'])
-#         doc.add_paragraph([comment_id, comment['text']])
-#         doc.save("comments_with_id.docx")
+def comments_docx_with_id(data, from_id):
+    doc = docx.Document()
+    for i in range(len(data)):
+        paragraph = doc.add_paragraph()
+        paragraph.add_run("Teкст комментария " + str(i+1) + ":\n" + str(data[i]['text']) + "\nЗапрещенный контент найден?: " + str(data[i]['result']) + "\n" + "Ссылка на автора:"+ " \nhttps://vk.com/id" + str(from_id[i]['from_id']) + "\n")
+        file_path = "comments_with_author_id.docx"
+        doc.save(file_path)
+    return file_path
+

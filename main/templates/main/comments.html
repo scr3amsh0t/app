@@ -20,16 +20,20 @@
         <li>
           <label>
             Анализировать комментарии под
-            <input type="text" id="points" class="input-number" value=50>
+            <input type="text" id="points" class="input-number" value=10>
             последними публикациями
         </label>
         </li>
         <li style="padding-top:5px">
-          <label><input type="checkbox" id="checkbox1" name="checkbox1">Указать ссылки на комментарии</label>
+          <label><input type="radio" id="radio1" name="radio">
+            Указать ссылки на комментарии
+          </label>
         </li>
         </li>
         <li>
-          <label><input type="checkbox" id="checkbox2" name="checkbox2">Указать ссылки на авторов</label>
+          <label><input type="radio" id="radio2" name="radio">
+            Указать ссылки на авторов
+          </label>
         </li>
       </ul>
     </div>
@@ -63,6 +67,8 @@
           const data = {
               textInput: $("#textInput").val(),
               points: $("#points").val(),
+              radio1: $("#radio1").prop("checked") ? "on" : "off",
+              radio2: $("#radio2").prop("checked") ? "on" : "off",
               check3: $("#checkbox3").prop("checked") ? "on" : "off",
               check4: $("#checkbox4").prop("checked") ? "on" : "off",
               check5: $("#checkbox5").prop("checked") ? "on" : "off",

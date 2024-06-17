@@ -3,12 +3,14 @@
 {% load static %}
 
 {% block styles %}
-<link rel="stylesheet" href="{% static "deps/styles/contact.css" %}" />
+<link rel="stylesheet" href="{% static "deps/styles/success.css" %}" />
 {% endblock styles %}
 
 {% block wall %}
-<div class="container">
-    <div class="message">Письмо успешно отправлено</div>
-    <a href="{% url 'index' %}" class="button"> Перейти на главную страницу</a>
+<div class="wall">
+    <div class="container">
+        <div class="message">Письмо успешно отправлено</div>
+        <a class="return" href="{% url 'index' %}" class="button"> Перейти на главную страницу</a>
+    </div>
 </div>
 {% endblock  %}
